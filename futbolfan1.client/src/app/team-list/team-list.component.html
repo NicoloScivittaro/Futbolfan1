@@ -1,0 +1,11 @@
+<h2>Lista Squadre</h2>
+<ul>
+  <div *ngFor="let team of teams">
+    <h3>{{ team.name }}</h3>
+    <p>Allenatore: {{ team.coach }}</p>
+    <p>Transfer Budget: {{ team.transferBudget }}</p>
+    <p>Salary Budget: {{ team.salaryBudget }}</p>
+
+    <button (click)="buyPlayer(team.id, 1)">Compra giocatore</button>
+  </div>
+</ul>

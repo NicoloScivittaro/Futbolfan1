@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+  <!-- Sezione per le altre pagine -->
+<div class="container mt-5">
+  <h1 class="text-center mb-4">{{ title }}</h1>
+
+  <!-- Menu di navigazione -->
+  <nav>
+    <ul class="nav justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/teams">Teams</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/players">Players</a>
+      </li>
+    </ul>
+  </nav>
+  <router-outlet></router-outlet>
