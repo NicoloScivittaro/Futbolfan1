@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FutbolFan1.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SampleController : ControllerBase

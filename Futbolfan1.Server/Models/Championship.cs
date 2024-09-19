@@ -1,15 +1,20 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
 namespace FutbolFan1.Models
 {
-    public class ChampionshipTeam
+    public class Championship
     {
-        public int ChampionshipId { get; set; }
-        public Championship Championship { get; set; }
+        [Key]
+        [Column("ChampionshipId")] // Questo indica che nel database la colonna si chiama 'ChampionshipId'
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Year { get; set; }
 
-        public int TeamId { get; set; }
-        public Team Team { get; set; }
+        // Aggiungi i campi StartDate e EndDate
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public ICollection<ChampionshipTeam> ChampionshipTeams { get; set; }
     }
-
-
-
-
 }

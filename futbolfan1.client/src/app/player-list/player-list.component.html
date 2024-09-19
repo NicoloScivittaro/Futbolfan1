@@ -1,4 +1,6 @@
 <h2>Lista Giocatori</h2>
+
+<a [routerLink]="['/create-player']" class="btn btn-primary">Aggiungi Giocatore</a>
 <ul>
   <li *ngFor="let player of players">
     {{ player.name }} - {{ player.position }}

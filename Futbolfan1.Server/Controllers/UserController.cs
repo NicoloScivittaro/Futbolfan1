@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -7,9 +7,11 @@ using FutbolFan1.Data;
 using FutbolFan1.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FutbolFan1.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("user")]
     public class UserController : Controller
@@ -38,11 +40,12 @@ namespace FutbolFan1.Controllers
             }
         }
 
-        // API Registration Endpoint (JSON Response)
-        // API Registration Endpoint (JSON Response)
+        // Rimuovi l'[Authorize] per l'endpoint di registrazione
+        [AllowAnonymous]
         [HttpPost("api/register")]
         public async Task<IActionResult> ApiRegister([FromBody] UserRegisterModel model)
         {
+            // Controlla se l'utente esiste già
             if (await _context.Users.AnyAsync(u => u.Email == model.Email))
             {
                 return BadRequest("User already exists.");
@@ -53,29 +56,48 @@ namespace FutbolFan1.Controllers
                 return BadRequest("Passwords do not match.");
             }
 
+            if (string.IsNullOrWhiteSpace(model.UserName))
+            {
+                return BadRequest("Username is required.");
+            }
+
             var user = new User
             {
                 Email = model.Email,
-                Password = HashPassword(model.Password) // Hash the password
+                Password = HashPassword(model.Password), // Hash the password
+                UserName = model.UserName
             };
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
             return Ok(new { user.Email });
         }
 
+
+
         // API Login Endpoint (JSON Response)
+        [AllowAnonymous]
         [HttpPost("api/login")]
         public async Task<IActionResult> ApiLogin([FromBody] UserLoginModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState); // Questo potrebbe essere ciò che genera l'errore 400
+            }
+
+            // Log di controllo
+            Console.WriteLine($"Login attempt: Email = {model.Email}, Password = {model.Password}");
+
             var hashedPassword = HashPassword(model.Password);
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == model.Email && u.Password == hashedPassword);
 
             if (user == null)
             {
-                return Unauthorized();
+                return Unauthorized(new { message = "Invalid email or password" });
             }
 
+            // Generazione del token
             var claims = new[]
             {
         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
@@ -98,6 +120,7 @@ namespace FutbolFan1.Controllers
                 Expiration = token.ValidTo
             });
         }
+
 
 
         // MVC Register Page (View Response)

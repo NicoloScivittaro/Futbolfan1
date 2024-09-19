@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Futbolfan1.Server.Migrations
 {
     [DbContext(typeof(FutbolFanContext))]
-    [Migration("20240917100144_a")]
+    [Migration("20240919090526_a")]
     partial class a
     {
         /// <inheritdoc />
@@ -25,35 +25,15 @@ namespace Futbolfan1.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("FutbolFan1.Models.Championship", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Championships");
-                });
-
-            modelBuilder.Entity("FutbolFan1.Models.ChampionshipTeam", b =>
+            modelBuilder.Entity("ChampionshipTeam", b =>
                 {
                     b.Property<int>("ChampionshipId")
                         .HasColumnType("int");
 
                     b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.HasKey("ChampionshipId", "TeamId");
@@ -63,7 +43,7 @@ namespace Futbolfan1.Server.Migrations
                     b.ToTable("ChampionshipTeams");
                 });
 
-            modelBuilder.Entity("FutbolFan1.Models.Formation", b =>
+            modelBuilder.Entity("Formation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,6 +60,33 @@ namespace Futbolfan1.Server.Migrations
                     b.ToTable("Formations");
                 });
 
+            modelBuilder.Entity("FutbolFan1.Models.Championship", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ChampionshipId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Championships");
+                });
+
             modelBuilder.Entity("FutbolFan1.Models.Player", b =>
                 {
                     b.Property<int>("Id")
@@ -94,11 +101,11 @@ namespace Futbolfan1.Server.Migrations
                     b.Property<decimal>("Cost")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Defense")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Dribbling")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Dribbling")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsStarting")
                         .HasColumnType("bit");
@@ -107,27 +114,28 @@ namespace Futbolfan1.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Passing")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Passing")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Physical")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Physical")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Shooting")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Shooting")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Speed")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Speed")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("TeamId")
                         .HasColumnType("int");
@@ -217,7 +225,7 @@ namespace Futbolfan1.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CurrentFormationId")
+                    b.Property<int?>("FormationId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -235,7 +243,7 @@ namespace Futbolfan1.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrentFormationId");
+                    b.HasIndex("FormationId");
 
                     b.ToTable("Teams");
                 });
@@ -303,7 +311,7 @@ namespace Futbolfan1.Server.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FutbolFan1.Models.ChampionshipTeam", b =>
+            modelBuilder.Entity("ChampionshipTeam", b =>
                 {
                     b.HasOne("FutbolFan1.Models.Championship", "Championship")
                         .WithMany("ChampionshipTeams")
@@ -334,7 +342,7 @@ namespace Futbolfan1.Server.Migrations
             modelBuilder.Entity("FutbolFan1.Models.PlayerSave", b =>
                 {
                     b.HasOne("FutbolFan1.Models.Player", "Player")
-                        .WithMany("PlayerSaves")
+                        .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -352,19 +360,16 @@ namespace Futbolfan1.Server.Migrations
 
             modelBuilder.Entity("FutbolFan1.Models.Position", b =>
                 {
-                    b.HasOne("FutbolFan1.Models.Formation", null)
+                    b.HasOne("Formation", null)
                         .WithMany("Positions")
                         .HasForeignKey("FormationId");
                 });
 
             modelBuilder.Entity("FutbolFan1.Models.Team", b =>
                 {
-                    b.HasOne("FutbolFan1.Models.Formation", "CurrentFormation")
+                    b.HasOne("Formation", null)
                         .WithMany("Teams")
-                        .HasForeignKey("CurrentFormationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("CurrentFormation");
+                        .HasForeignKey("FormationId");
                 });
 
             modelBuilder.Entity("FutbolFan1.Models.TeamSave", b =>
@@ -378,21 +383,16 @@ namespace Futbolfan1.Server.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("FutbolFan1.Models.Championship", b =>
-                {
-                    b.Navigation("ChampionshipTeams");
-                });
-
-            modelBuilder.Entity("FutbolFan1.Models.Formation", b =>
+            modelBuilder.Entity("Formation", b =>
                 {
                     b.Navigation("Positions");
 
                     b.Navigation("Teams");
                 });
 
-            modelBuilder.Entity("FutbolFan1.Models.Player", b =>
+            modelBuilder.Entity("FutbolFan1.Models.Championship", b =>
                 {
-                    b.Navigation("PlayerSaves");
+                    b.Navigation("ChampionshipTeams");
                 });
 
             modelBuilder.Entity("FutbolFan1.Models.Team", b =>

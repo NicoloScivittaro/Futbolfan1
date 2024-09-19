@@ -1,0 +1,33 @@
+<h2>Dettagli della Squadra</h2>
+
+<!-- Visualizzazione dei dettagli della squadra -->
+<div *ngIf="team">
+  <h3>{{ team?.name }}</h3>
+  <p>Allenatore: {{ team?.coach }}</p>
+  <p>Transfer Budget: {{ team?.transferBudget }}</p>
+  <p>Salary Budget: {{ team?.salaryBudget }}</p>
+
+  <h4>Giocatori della Squadra</h4>
+  <ul>
+    <li *ngFor="let player of team?.players">
+      {{ player.name }} - {{ player.position }} - Età: {{ player.age }}
+      <button (click)="sellPlayer(player.id)">Vendi</button>
+    </li>
+  </ul>
+
+  <h4>Giocatori Disponibili</h4>
+  <ul>
+    <li *ngFor="let player of availablePlayers">
+      {{ player.name }} - {{ player.position }} - Costo: {{ player.cost }}
+      <button (click)="buyPlayer(player.id)">Compra</button>
+    </li>
+  </ul>
+</div>
+
+<!-- Messaggi di errore o successo -->
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>
+<div *ngIf="successMessage" class="success">
+  {{ successMessage }}
+</div>

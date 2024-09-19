@@ -7,6 +7,19 @@ import { Player } from '../model/player';
   templateUrl: './players.component.html',
   styleUrls: ['./players.component.scss'],
 })
-export class PlayersComponent  {
- 
+export class PlayersComponent implements OnInit {
+  players: Player[] = [];
+  teamId: number = 1; // TeamId fisso per esempio
+
+  constructor(private apiService: ApiService) { }
+
+  ngOnInit(): void {
+    this.loadPlayers();
+  }
+
+  loadPlayers(): void {
+    this.apiService.getPlayersByTeam(this.teamId).subscribe((data) => {
+      this.players = data;
+    });
+  }
 }

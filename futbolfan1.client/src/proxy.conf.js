@@ -1,7 +1,8 @@
+// proxy.conf.js
 const PROXY_CONFIG = [
   {
-    context: ['/teams'], // Percorsi da proxy
-    target: 'http://localhost:7293', // URL del tuo API
+    context: ['/api'],
+    target: 'http://localhost:7293',
     secure: false,
     changeOrigin: true,
     logLevel: 'debug'

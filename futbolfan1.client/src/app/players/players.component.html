@@ -1,1 +1,27 @@
-<h1>ciao sono players</h1>
+<h1>Giocatori della squadra</h1>
+
+<!-- Pulsante per creare un nuovo giocatore -->
+<a [routerLink]="['/create-player']" class="btn btn-primary">Aggiungi Giocatore</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Posizione</th>
+      <th>Età</th>
+      <th>Costo</th>
+      <th>Ruolo</th>
+      <th>Squadra</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let player of players">
+      <td>{{ player.name }}</td>
+      <td>{{ player.position }}</td>
+      <td>{{ player.age }}</td>
+      <td>{{ player.cost }}</td>
+      <td>{{ player.role }}</td>
+      <td>{{ player.teamId }}</td>
+    </tr>
+  </tbody>
+</table>

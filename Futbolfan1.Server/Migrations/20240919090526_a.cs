@@ -15,15 +15,16 @@ namespace Futbolfan1.Server.Migrations
                 name: "Championships",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ChampionshipId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Championships", x => x.Id);
+                    table.PrimaryKey("PK_Championships", x => x.ChampionshipId);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,26 +89,26 @@ namespace Futbolfan1.Server.Migrations
                     Coach = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TransferBudget = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SalaryBudget = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    CurrentFormationId = table.Column<int>(type: "int", nullable: true),
-                    Overall = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Overall = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FormationId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teams", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Teams_Formations_CurrentFormationId",
-                        column: x => x.CurrentFormationId,
+                        name: "FK_Teams_Formations_FormationId",
+                        column: x => x.FormationId,
                         principalTable: "Formations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "ChampionshipTeams",
                 columns: table => new
                 {
+                    TeamId = table.Column<int>(type: "int", nullable: false),
                     ChampionshipId = table.Column<int>(type: "int", nullable: false),
-                    TeamId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -116,7 +117,7 @@ namespace Futbolfan1.Server.Migrations
                         name: "FK_ChampionshipTeams_Championships_ChampionshipId",
                         column: x => x.ChampionshipId,
                         principalTable: "Championships",
-                        principalColumn: "Id",
+                        principalColumn: "ChampionshipId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ChampionshipTeams_Teams_TeamId",
@@ -137,15 +138,15 @@ namespace Futbolfan1.Server.Migrations
                     Age = table.Column<int>(type: "int", nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsStarting = table.Column<bool>(type: "bit", nullable: false),
                     TeamId = table.Column<int>(type: "int", nullable: true),
-                    Speed = table.Column<int>(type: "int", nullable: false),
-                    Shooting = table.Column<int>(type: "int", nullable: false),
-                    Passing = table.Column<int>(type: "int", nullable: false),
-                    Dribbling = table.Column<int>(type: "int", nullable: false),
-                    Defense = table.Column<int>(type: "int", nullable: false),
-                    Physical = table.Column<int>(type: "int", nullable: false)
+                    Speed = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Shooting = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Passing = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Dribbling = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Defense = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Physical = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -233,9 +234,9 @@ namespace Futbolfan1.Server.Migrations
                 column: "FormationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Teams_CurrentFormationId",
+                name: "IX_Teams_FormationId",
                 table: "Teams",
-                column: "CurrentFormationId");
+                column: "FormationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamSaves_TeamId",

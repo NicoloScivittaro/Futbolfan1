@@ -4,13 +4,34 @@ import { HomeComponent } from './home/home.component';
 import { TeamSelectionComponent } from './team-selection/team-selection.component';
 import { PlayerListComponent } from './player-list/player-list.component';
 import { TeamListComponent } from './team-list/team-list.component';
+import { TeamsComponent } from './teams/teams.component';
+import { CreateTeamComponent } from './create-team/create-team.component';
+import { EditTeamComponent } from './edit-team/edit-team.component';
+import { CreatePlayerComponent } from './create-player/create-player.component';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ChampionshipListComponent } from './championship-list/championship-list.component';
+import { CreateChampionshipComponent } from './create-championship/create-championship.component';
+import { EditChampionshipComponent } from './edit-championship/edit-championship.component';
+import { TeamDetailComponent } from './team-detail/team-detail.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },  // Pagina principale
-  { path: 'team-selection', component: TeamSelectionComponent },  // Selezione squadra
-  { path: 'players', component: PlayerListComponent },  // Lista giocatori
-  { path: 'teams', component: TeamListComponent },  // Lista squadre
-  { path: '**', redirectTo: '' },  // Rotta di fallback in caso di percorso non trovato
+  { path: '', component: HomeComponent },  // Home page
+  { path: 'team-selection', component: TeamSelectionComponent },
+  { path: 'players', component: PlayerListComponent },
+  { path: 'teams', component: TeamsComponent },
+  { path: 'team/:id', component: TeamDetailComponent },
+  { path: 'create-team', component: CreateTeamComponent },
+  { path: 'edit-team/:id', component: EditTeamComponent },
+  { path: 'create-player', component: CreatePlayerComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'championships', component: ChampionshipListComponent },
+  { path: 'create-championship', component: CreateChampionshipComponent },
+  { path: 'edit-championship/:id', component: EditChampionshipComponent },
+  { path: '**', redirectTo: '' }  // Rotta di fallback
 ];
 
 @NgModule({

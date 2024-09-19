@@ -18,33 +18,51 @@ namespace FutbolFan1.Controllers
         {
             _context = context;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetTeams()
         {
             var teams = await _context.Teams
-                .Include(t => t.TeamSaves)
-                .Include(t => t.CurrentFormation)
+                .Select(t => new
+                {
+                    t.Id,
+                    t.Name,
+                    t.Coach,
+                    t.TransferBudget,
+                    t.SalaryBudget,
+                    t.Overall
+                    // Rimuovi questa linea
+                    // CurrentFormation = t.CurrentFormation.Name
+                })
                 .ToListAsync();
 
             return Ok(teams);
         }
 
+
+
+
         [HttpGet("{teamId}")]
         public async Task<IActionResult> GetTeam(int teamId)
         {
-            var team = await _context.Teams
-                .Include(t => t.Players)
-                .Include(t => t.CurrentFormation)
-                .FirstOrDefaultAsync(t => t.Id == teamId);
-
-            if (team == null)
+            try
             {
-                return NotFound();
-            }
+                var team = await _context.Teams
+                    .Include(t => t.Players)
+                    .FirstOrDefaultAsync(t => t.Id == teamId);
 
-            return Ok(team);
+                if (team == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(team);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
+
 
         [HttpGet("BuyPlayers/{teamId}")]
         public async Task<IActionResult> GetAvailablePlayers(int teamId)
@@ -82,7 +100,6 @@ namespace FutbolFan1.Controllers
             team.SalaryBudget -= player.Salary;
             player.TeamId = team.Id;
 
-            UpdateTeamOverall(team);
 
             await _context.SaveChangesAsync();
 
@@ -92,20 +109,31 @@ namespace FutbolFan1.Controllers
         [HttpPost("SellPlayer")]
         public async Task<IActionResult> SellPlayer([FromBody] SellPlayerRequest request)
         {
+
+            // Validate input
+            if (request.SellingTeamId <= 0 || request.PlayerId <= 0)
+            {
+                return BadRequest("Invalid team or player ID.");
+            }
+
             var sellingTeam = await _context.Teams.FirstOrDefaultAsync(t => t.Id == request.SellingTeamId);
             var player = await _context.Players.FindAsync(request.PlayerId);
 
             if (player == null || sellingTeam == null || player.TeamId != sellingTeam.Id)
             {
-                return NotFound();
+                return NotFound("Player or selling team not found.");
             }
 
-            var buyingTeam = request.BuyingTeamId.HasValue
-                ? await _context.Teams.FirstOrDefaultAsync(t => t.Id == request.BuyingTeamId.Value)
-                : null;
-
-            if (buyingTeam != null)
+            Team buyingTeam = null;
+            if (request.BuyingTeamId.HasValue)
             {
+                buyingTeam = await _context.Teams.FirstOrDefaultAsync(t => t.Id == request.BuyingTeamId.Value);
+
+                if (buyingTeam == null)
+                {
+                    return NotFound("Buying team not found.");
+                }
+
                 if (buyingTeam.TransferBudget < player.Cost || buyingTeam.SalaryBudget < player.Salary)
                 {
                     return BadRequest("The buying team doesn't have enough budget.");
@@ -120,7 +148,7 @@ namespace FutbolFan1.Controllers
             else
             {
                 sellingTeam.TransferBudget += player.Cost;
-                player.TeamId = null;
+                player.TeamId = null; // Player is released from the team
             }
 
             await _context.SaveChangesAsync();
@@ -131,13 +159,15 @@ namespace FutbolFan1.Controllers
         [HttpPost("SetFormationAndStartingXI")]
         public async Task<IActionResult> SetFormationAndStartingXI([FromBody] SetFormationRequest request)
         {
+            // Trova il team in base all'ID
             var team = await _context.Teams.Include(t => t.Players).FirstOrDefaultAsync(t => t.Id == request.TeamId);
 
             if (team == null)
             {
-                return NotFound();
+                return NotFound("Team not found.");
             }
 
+            // Trova la formazione selezionata
             var selectedFormation = await _context.Formations.FirstOrDefaultAsync(f => f.Name == request.Formation);
 
             if (selectedFormation == null)
@@ -145,21 +175,23 @@ namespace FutbolFan1.Controllers
                 return BadRequest("Invalid formation selected.");
             }
 
-            team.CurrentFormation = selectedFormation;
-
+            // Imposta i giocatori titolari e i loro ruoli
             foreach (var player in team.Players)
             {
                 player.IsStarting = request.StartingXI.Contains(player.Id);
+
                 if (request.PlayerRole.ContainsKey(player.Id))
                 {
                     player.Role = request.PlayerRole[player.Id];
                 }
             }
 
+            // Salva le modifiche al database
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok("Formation and Starting XI successfully updated.");
         }
+
 
         [HttpPost("SaveTeam")]
         public async Task<IActionResult> SaveTeam([FromBody] SaveTeamRequest request)
@@ -260,12 +292,34 @@ namespace FutbolFan1.Controllers
             return Ok(formations);
         }
 
-        private void UpdateTeamOverall(Team team)
+        [HttpPost("api/teams/create")]
+        public async Task<IActionResult> CreateTeam([FromBody] Team team)
         {
-            if (team.Players != null && team.Players.Count > 0)
+            if (team == null)
             {
-                team.Overall = (decimal)team.Players.Average(p => p.Overall);
+                return BadRequest("Team object is null");
+            }
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                _context.Teams.Add(team);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetTeam), new { id = team.Id }, team);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+
+
+
     }
 }

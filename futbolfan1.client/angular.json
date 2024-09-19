@@ -38,6 +38,7 @@
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
+
             "scripts": []
           },
           "configurations": {
@@ -100,7 +101,6 @@
             "styles": [
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css"
-            ],
             ],
             "scripts": [],
             "karmaConfig": "karma.conf.js"

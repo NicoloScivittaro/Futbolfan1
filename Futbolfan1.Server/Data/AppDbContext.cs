@@ -32,22 +32,10 @@ namespace FutbolFan1.Data
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<PlayerSave>()
-                .HasOne(ps => ps.Player)
-                .WithMany(p => p.PlayerSaves)
-                .HasForeignKey(ps => ps.PlayerId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<PlayerSave>()
                 .HasOne(ps => ps.TeamSave)
                 .WithMany(ts => ts.PlayerSaves)
                 .HasForeignKey(ps => ps.TeamSaveId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Team>()
-                .HasOne(t => t.CurrentFormation)
-                .WithMany(f => f.Teams)
-                .HasForeignKey(t => t.CurrentFormationId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ChampionshipTeam>()
                 .HasKey(ct => new { ct.ChampionshipId, ct.TeamId });

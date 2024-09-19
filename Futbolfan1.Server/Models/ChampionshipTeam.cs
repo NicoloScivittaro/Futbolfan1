@@ -1,16 +1,10 @@
-namespace FutbolFan1.Models
+using FutbolFan1.Models;
+
+public class ChampionshipTeam
 {
-    public class Championship
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-
-        // Navigation properties
-        public ICollection<ChampionshipTeam> ChampionshipTeams { get; set; }
-    }
-
-
-
+    public int Id { get; set; }
+    public int TeamId { get; set; }
+    public int ChampionshipId { get; set; }
+    public Team Team { get; set; }
+    public Championship Championship { get; set; }
 }

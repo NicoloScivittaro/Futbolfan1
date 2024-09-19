@@ -1,0 +1,144 @@
+<div class="container mt-4">
+  <h2>Create Player</h2>
+  <form (ngSubmit)="createPlayer()" #playerForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text"
+             id="name"
+             class="form-control"
+             [(ngModel)]="newPlayer.name"
+             name="name"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="position">Position:</label>
+      <input type="text"
+             id="position"
+             class="form-control"
+             [(ngModel)]="newPlayer.position"
+             name="position"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="age">Age:</label>
+      <input type="number"
+             id="age"
+             class="form-control"
+             [(ngModel)]="newPlayer.age"
+             name="age"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="team">Team ID:</label>
+      <input type="number"
+             id="team"
+             class="form-control"
+             [(ngModel)]="newPlayer.teamId"
+             name="teamId"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="cost">Cost:</label>
+      <input type="number"
+             id="cost"
+             class="form-control"
+             [(ngModel)]="newPlayer.cost"
+             name="cost"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="salary">Salary:</label>
+      <input type="number"
+             id="salary"
+             class="form-control"
+             [(ngModel)]="newPlayer.salary"
+             name="salary"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role:</label>
+      <input type="text"
+             id="role"
+             class="form-control"
+             [(ngModel)]="newPlayer.role"
+             name="role" />
+    </div>
+
+    <div class="form-group">
+      <label for="isStarting">Is Starting:</label>
+      <input type="checkbox"
+             id="isStarting"
+             class="form-check-input"
+             [(ngModel)]="newPlayer.isStarting"
+             name="isStarting" />
+    </div>
+
+    <div class="form-group">
+      <label for="speed">Speed:</label>
+      <input type="number"
+             id="speed"
+             class="form-control"
+             [(ngModel)]="newPlayer.speed"
+             name="speed"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="shooting">Shooting:</label>
+      <input type="number"
+             id="shooting"
+             class="form-control"
+             [(ngModel)]="newPlayer.shooting"
+             name="shooting"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="passing">Passing:</label>
+      <input type="number"
+             id="passing"
+             class="form-control"
+             [(ngModel)]="newPlayer.passing"
+             name="passing"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="dribbling">Dribbling:</label>
+      <input type="number"
+             id="dribbling"
+             class="form-control"
+             [(ngModel)]="newPlayer.dribbling"
+             name="dribbling"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="defense">Defense:</label>
+      <input type="number"
+             id="defense"
+             class="form-control"
+             [(ngModel)]="newPlayer.defense"
+             name="defense"
+             required />
+    </div>
+
+    <div class="form-group">
+      <label for="physical">Physical:</label>
+      <input type="number"
+             id="physical"
+             class="form-control"
+             [(ngModel)]="newPlayer.physical"
+             name="physical"
+             required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Player</button>
+  </form>
+</div>

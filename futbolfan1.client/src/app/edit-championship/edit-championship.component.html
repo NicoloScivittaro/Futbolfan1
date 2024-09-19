@@ -1,0 +1,16 @@
+<div>
+  <h2>Modifica Campionato</h2>
+  <form (ngSubmit)="updateChampionship()">
+    <label for="name">Nome:</label>
+    <input type="text" id="name" [(ngModel)]="championship.name" name="name" required>
+
+    <label for="startDate">Data Inizio:</label>
+    <input type="date" id="startDate" [(ngModel)]="championship.startDate" name="startDate" required>
+
+    <label for="endDate">Data Fine:</label>
+    <input type="date" id="endDate" [(ngModel)]="championship.endDate" name="endDate" required>
+
+    <button type="submit">Salva Modifiche</button>
+    <a routerLink="/championships">Annulla</a>
+  </form>
+</div>

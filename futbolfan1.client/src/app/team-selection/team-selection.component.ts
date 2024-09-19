@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';  // Cambia il percorso in base alla struttura del progetto
-
+import { Router } from '@angular/router'; // Assicurati di importare il Router
+import { TeamService } from '../services/team.service'; // Importa il TeamService
 
 @Component({
   selector: 'app-team-selection',
@@ -10,11 +10,36 @@ import { ApiService } from '../services/api.service';  // Cambia il percorso in 
 export class TeamSelectionComponent implements OnInit {
   teams: any[] = [];
 
-  constructor(private apiService: ApiService) {}
+  // Inietta il Router qui
+  constructor(private teamService: TeamService, private router: Router) { }
 
   ngOnInit(): void {
-    this.apiService.getTeams().subscribe(data => {
-      this.teams = data;
+    this.getTeams();
+  }
+
+  getTeams(): void {
+    this.teamService.getTeams().subscribe(teams => {
+      this.teams = teams;
+    });
+  }
+
+  goToPlayers(): void {
+    // Utilizza il router per navigare alla pagina dei giocatori
+    this.router.navigate(['/players']);
+  }
+
+  selectTeam(team: any): void {
+    console.log('Team selected:', team);
+  }
+
+  buyPlayer(teamId: number, playerId: number): void {
+    this.teamService.buyPlayer(teamId, playerId).subscribe(response => {
+      console.log('Player bought successfully:', response);
+      // Aggiorna lo stato del team o dei giocatori se necessario
+    }, error => {
+      console.error('Failed to buy player:', error);
     });
   }
 }
+
+

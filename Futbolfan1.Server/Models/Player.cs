@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace FutbolFan1.Models
 {
     public class Player
@@ -8,30 +10,22 @@ namespace FutbolFan1.Models
         public int Age { get; set; }
         public decimal Cost { get; set; }
         public decimal Salary { get; set; }
-        public string? Role { get; set; }  // Ruolo del giocatore (opzionale)
-        public bool IsStarting { get; set; }  // Se il giocatore è titolare
+        public string Role { get; set; }
+        public bool IsStarting { get; set; }
 
-        // Foreign key
+        // TeamId è facoltativo, per gestire giocatori senza squadra
         public int? TeamId { get; set; }
+
+        // Associare un giocatore a una squadra
+        [JsonIgnore]  // Evita cicli di serializzazione
         public Team Team { get; set; }
 
-        public ICollection<PlayerSave> PlayerSaves { get; set; }
-
-        // Statistiche del giocatore (valori tra 1 e 99)
-        public int Speed { get; set; }      // Velocità
-        public int Shooting { get; set; }   // Tiro
-        public int Passing { get; set; }    // Passaggi
-        public int Dribbling { get; set; }  // Dribbling
-        public int Defense { get; set; }    // Difesa
-        public int Physical { get; set; }   // Fisico
-
-        // Calcola l'Overall Rating come media delle statistiche principali
-        public int Overall
-        {
-            get
-            {
-                return (Speed + Shooting + Passing + Dribbling + Defense + Physical) / 6;
-            }
-        }
+        // Attributi delle abilità del giocatore
+        public decimal Speed { get; set; }
+        public decimal Shooting { get; set; }
+        public decimal Passing { get; set; }
+        public decimal Dribbling { get; set; }
+        public decimal Defense { get; set; }
+        public decimal Physical { get; set; }
     }
 }

@@ -1,34 +1,5 @@
-<div class="container mt-5">
-  <h1 class="text-center mb-4">{{ title }}</h1>
+<app-navbar></app-navbar>
 
-  <div class="row">
-    <div class="col-md-6">
-      <h2>Teams</h2>
-      <ul class="list-group">
-        <li *ngFor="let team of teams"
-            (click)="onSelectTeam(team)"
-            [class.active]="team === selectedTeam"
-            class="list-group-item list-group-item-action">
-          {{ team.name }}
-        </li>
-      </ul>
-    </div>
+<router-outlet></router-outlet> 
 
-    <div class="col-md-6">
-      <h2 *ngIf="selectedTeam">Players in {{ selectedTeam.name }}</h2>
-      <h2 *ngIf="!selectedTeam">All Players</h2>
-      <ul class="list-group">
-        <li *ngFor="let player of players"
-            class="list-group-item">
-          {{ player.name }} - {{ player.position }}
-        </li>
-      </ul>
-    </div>
-  </div>
-
-  <button *ngIf="selectedTeam"
-          (click)="clearSelection()"
-          class="btn btn-primary mt-3">
-    Clear Selection
-  </button>
-</div>
+<app-footer></app-footer> 

@@ -7,78 +7,9 @@ using System.Threading.Tasks;
 
 namespace FutbolFan1.Controllers
 {
-    // Questo controller è dedicato solo alle API
     [Route("api/[controller]")]
     [ApiController]
-    public class ChampionshipsApiController : ControllerBase
-    {
-        private readonly FutbolFanContext _context;
-
-        public ChampionshipsApiController(FutbolFanContext context)
-        {
-            _context = context;
-        }
-
-        // GET: api/Championships
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Championship>>> GetChampionships()
-        {
-            return await _context.Championships
-                .Include(c => c.ChampionshipTeams)
-                .ThenInclude(ct => ct.Team)
-                .ToListAsync();
-        }
-
-
-        // POST: api/Championships
-        [HttpPost]
-        public async Task<ActionResult<Championship>> PostChampionship(Championship championship)
-        {
-            _context.Championships.Add(championship);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetChampionships), new { id = championship.Id }, championship);
-        }
-
-        // PUT: api/Championships/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutChampionship(int id, Championship championship)
-        {
-            if (id != championship.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(championship).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ChampionshipExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        private bool ChampionshipExists(int id)
-        {
-            return _context.Championships.Any(e => e.Id == id);
-        }
-    }
-
-    // Questo controller è dedicato alle viste MVC per la gestione dei campionati
-    [Route("championships")]
-    public class ChampionshipsController : Controller
+    public class ChampionshipsController : ControllerBase
     {
         private readonly FutbolFanContext _context;
 
@@ -87,16 +18,21 @@ namespace FutbolFan1.Controllers
             _context = context;
         }
 
-        // GET: championships
+        // GET: api/Championships
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult<IEnumerable<Championship>>> GetChampionships()
         {
-            var championships = await _context.Championships.ToListAsync();
-            return View(championships);
+            var championships = await _context.Championships
+                .Include(c => c.ChampionshipTeams)
+                .ThenInclude(ct => ct.Team)
+                .ToListAsync();
+
+            return championships;
         }
-        // GET: api/Championships/Details/5
-        [HttpGet("details/{id}")]
-        public async Task<IActionResult> Details(int id)
+
+        // GET: api/Championships/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Championship>> GetChampionship(int id)
         {
             var championship = await _context.Championships
                 .Include(c => c.ChampionshipTeams)
@@ -108,64 +44,46 @@ namespace FutbolFan1.Controllers
                 return NotFound();
             }
 
-            return View(championship);
+            return championship;
         }
 
-        // GET: championships/Create
-        [HttpGet("create")]
-        public IActionResult Create()
+        // POST: api/Championships
+        [HttpPost]
+        public async Task<ActionResult<Championship>> PostChampionship([FromBody] Championship championship)
         {
-            return View();
-        }
+            if (championship == null)
+            {
+                return BadRequest("Championship object is null");
+            }
 
-        // POST: championships/Create
-        // POST: championships/Create
-        [HttpPost("create")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Championship championship)
-        {
-            // Aggiungi direttamente il campionato senza controllare ModelState
+            // Aggiungi un controllo di validazione personalizzato qui se necessario
             _context.Championships.Add(championship);
-            await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
-        }
-
-
-        // POST: championships/Edit/5
-        // GET: championships/Edit/5
-        [HttpGet("edit/{id}")]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var championship = await _context.Championships
-                .Include(c => c.ChampionshipTeams)
-                .ThenInclude(ct => ct.Team)
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            if (championship == null)
+            try
             {
-                return NotFound();
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                // Gestione delle eccezioni nel caso di errori di aggiornamento del database
+                return StatusCode(500, $"Error saving championship: {ex.Message}");
             }
 
-            // Passa le squadre disponibili alla vista tramite ViewBag
-            ViewBag.AvailableTeams = await _context.Teams.ToListAsync();
-
-            return View(championship);
+            return CreatedAtAction(nameof(GetChampionship), new { id = championship.Id }, championship);
         }
 
-
-        // POST: championships/Edit/5
-        [HttpPost("edit/{id}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Championship championship, List<int> SelectedTeamIds)
+        // PUT: api/Championships/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutChampionship(int id, [FromBody] Championship championship, [FromQuery] List<int> selectedTeamIds)
         {
             if (id != championship.Id)
             {
-                return BadRequest();
+                return BadRequest("Championship ID mismatch");
             }
 
             var existingChampionship = await _context.Championships
                 .Include(c => c.ChampionshipTeams)
+                .ThenInclude(ct => ct.Team)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (existingChampionship == null)
@@ -180,7 +98,7 @@ namespace FutbolFan1.Controllers
 
             // Aggiorna la relazione ChampionshipTeams
             existingChampionship.ChampionshipTeams.Clear();
-            foreach (var teamId in SelectedTeamIds)
+            foreach (var teamId in selectedTeamIds)
             {
                 existingChampionship.ChampionshipTeams.Add(new ChampionshipTeam
                 {
@@ -205,11 +123,12 @@ namespace FutbolFan1.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
-        [HttpPost("delete/{id}")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+
+        // DELETE: api/Championships/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteChampionship(int id)
         {
             var championship = await _context.Championships.FindAsync(id);
             if (championship == null)
@@ -220,9 +139,8 @@ namespace FutbolFan1.Controllers
             _context.Championships.Remove(championship);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
-
 
         private bool ChampionshipExists(int id)
         {

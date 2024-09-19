@@ -23,6 +23,6 @@ export class ApiService {
   }
   getPlayersByTeam(teamId: number): Observable<Player[]> {
     return this.http.get<Player[]>(`${this.apiUrl}/Teams/${teamId}/players`);
-
   }
+
 }

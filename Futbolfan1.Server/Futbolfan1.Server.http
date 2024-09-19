@@ -1,10 +1,2 @@
 @Futbolfan1.Server_HostAddress = http://localhost:7293
 
-### Ottieni tutte le squadre
-GET {{Futbolfan1.Server_HostAddress}}/teams
-Accept: application/json
-
-### Ottieni dettagli della squadra con ID
-GET {{Futbolfan1.Server_HostAddress}}/teams/1
-Accept: application/json
-

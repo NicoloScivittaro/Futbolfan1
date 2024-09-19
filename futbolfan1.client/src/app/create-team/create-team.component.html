@@ -1,0 +1,15 @@
+<form (ngSubmit)="createTeam()">
+  <label for="name">Team Name:</label>
+  <input type="text" [(ngModel)]="newTeam.name" name="name" required />
+
+  <label for="coach">Coach:</label>
+  <input type="text" [(ngModel)]="newTeam.coach" name="coach" required />
+
+  <label for="transferBudget">Transfer Budget:</label>
+  <input type="number" [(ngModel)]="newTeam.transferBudget" name="transferBudget" required />
+
+  <label for="salaryBudget">Salary Budget:</label>
+  <input type="number" [(ngModel)]="newTeam.salaryBudget" name="salaryBudget" required />
+
+  <button type="submit">Create Team</button>
+</form>

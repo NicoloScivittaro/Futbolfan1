@@ -1,0 +1,24 @@
+<div>
+  <h2>Lista dei Campionati</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Data Inizio</th>
+        <th>Data Fine</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let championship of championships">
+        <td>{{ championship.name }}</td>
+        <td>{{ championship.startDate | date }}</td>
+        <td>{{ championship.endDate | date }}</td>
+        <td>
+          <button (click)="deleteChampionship(championship.id)">Elimina</button>
+          <a [routerLink]="['/edit-championship', championship.id]">Modifica</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

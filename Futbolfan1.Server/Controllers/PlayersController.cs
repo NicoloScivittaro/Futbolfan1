@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using FutbolFan1.Data;
 using FutbolFan1.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FutbolFan1.Controllers
@@ -23,6 +24,7 @@ namespace FutbolFan1.Controllers
             var players = await _context.Players.Include(p => p.Team).ToListAsync();
             return View(players);
         }
+
         // GET: api/Teams/{teamId}/players
         [HttpGet("{teamId}/players")]
         public async Task<IActionResult> GetPlayersByTeam(int teamId)
@@ -33,7 +35,6 @@ namespace FutbolFan1.Controllers
 
             return Ok(players);
         }
-
 
         // GET: Players/Details/5
         [HttpGet]
@@ -60,7 +61,7 @@ namespace FutbolFan1.Controllers
         }
 
         // POST: Players/Create
-        [HttpPost]
+        [HttpPost("api/players/create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Position,Age,Cost,Salary,Role,IsStarting,TeamId,Speed,Shooting,Passing,Dribbling,Defense,Physical")] Player player)
         {
