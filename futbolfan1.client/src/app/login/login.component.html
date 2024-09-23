@@ -1,9 +1,15 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <label for="email">Email:</label>
-  <input id="email" formControlName="email" type="email">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="container mt-5">
+  <h2 class="text-center mb-4">Accedi al Tuo Account</h2>
 
-  <label for="password">Password:</label>
-  <input id="password" formControlName="password" type="password">
+  <div class="mb-3">
+    <label for="email" class="form-label">Email:</label>
+    <input id="email" formControlName="email" type="email" class="form-control" placeholder="Inserisci la tua email" required>
+  </div>
 
-  <button type="submit">Login</button>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password:</label>
+    <input id="password" formControlName="password" type="password" class="form-control" placeholder="Inserisci la tua password" required>
+  </div>
+
+  <button type="submit" class="btn btn-primary w-100">Accedi</button>
 </form>

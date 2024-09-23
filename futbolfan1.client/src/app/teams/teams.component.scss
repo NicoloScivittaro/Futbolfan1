@@ -1,0 +1,26 @@
+.list-group-item {
+  background-image: url('/assets/images/football-field.jpg');
+  background-size: cover;
+  color: white; /* Cambia il colore del testo */
+  border: 1px solid #ffc107; /* Colore del bordo */
+}
+
+.btn-success {
+  background-color: #28a745; /* Colore verde */
+}
+
+.btn-warning {
+  background-color: #ffc107; /* Colore giallo */
+}
+
+.btn-danger {
+  background-color: #dc3545; /* Colore rosso */
+}
+
+.team-info h5 {
+  font-weight: bold;
+}
+
+.team-info small {
+  font-style: italic;
+}

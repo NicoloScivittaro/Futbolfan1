@@ -1,3 +1,5 @@
+using FutbolFan1.Models;
+
 namespace FutbolFan1.Models
 {
     public class TeamSave

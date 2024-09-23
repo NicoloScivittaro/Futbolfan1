@@ -37,8 +37,19 @@ export class EditTeamComponent implements OnInit {
   }
 
   saveTeam(): void {
-    this.teamService.updateTeam(this.team).subscribe(() => {
-      this.router.navigate(['/teams']);  // Navigate back to the teams list after saving
+    this.teamService.updateTeam(this.team.id, this.team).subscribe({
+      next: () => {
+        this.router.navigate(['/teams']);  // Navigate back to the teams list after saving
+      },
+      error: (err) => {
+        console.error('Error updating team:', err);  // Log error if update fails
+      }
     });
   }
+
+
+  cancel(): void {
+    this.router.navigate(['/teams']);
+  }
+
 }

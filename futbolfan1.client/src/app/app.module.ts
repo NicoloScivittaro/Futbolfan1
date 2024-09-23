@@ -24,6 +24,8 @@ import { CreateChampionshipComponent } from './create-championship/create-champi
 import { ChampionshipListComponent } from './championship-list/championship-list.component';
 import { EditChampionshipComponent } from './edit-championship/edit-championship.component';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
+import { ApiService } from './services/api.service';
+import { PlayerService } from './services/PlayerService';
 
 
 @NgModule({
@@ -57,7 +59,7 @@ import { TeamDetailComponent } from './team-detail/team-detail.component';
     HttpClientModule
   ],
 
-  providers: [],
+  providers: [ApiService, PlayerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

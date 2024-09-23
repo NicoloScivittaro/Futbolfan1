@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { PlayerService } from '../services/PlayerService';
 import { Player } from '../model/player';
 
 @Component({
@@ -9,17 +9,23 @@ import { Player } from '../model/player';
 })
 export class PlayersComponent implements OnInit {
   players: Player[] = [];
-  teamId: number = 1; // TeamId fisso per esempio
+  teamId: number | null = null; // Imposta a null inizialmente
 
-  constructor(private apiService: ApiService) { }
+  constructor(private playerService: PlayerService) { }
 
   ngOnInit(): void {
     this.loadPlayers();
   }
 
   loadPlayers(): void {
-    this.apiService.getPlayersByTeam(this.teamId).subscribe((data) => {
-      this.players = data;
-    });
+    if (this.teamId) {
+      this.playerService.getPlayersByTeam(this.teamId).subscribe((data) => {
+        this.players = data;
+      });
+    } else {
+      this.playerService.getAllPlayers().subscribe((data) => {
+        this.players = data; // Carica tutti i giocatori se teamId è null
+      });
+    }
   }
 }

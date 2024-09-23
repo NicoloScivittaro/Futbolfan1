@@ -1,0 +1,25 @@
+.container {
+  max-width: 400px; /* Limita la larghezza del modulo */
+  background-color: #f8f9fa; /* Sfondo chiaro */
+  border-radius: 10px; /* Angoli arrotondati */
+  padding: 20px; /* Padding interno */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra */
+}
+
+h2 {
+  color: #343a40; /* Colore del titolo */
+}
+
+.form-label {
+  font-weight: bold; /* Grassetto per le etichette */
+}
+
+button.btn-primary {
+  background-color: #007bff; /* Colore blu del pulsante */
+  border: none; /* Rimuovi il bordo */
+  border-radius: 5px; /* Angoli arrotondati per il pulsante */
+}
+
+button.btn-primary:hover {
+  background-color: #0056b3; /* Colore più scuro al passaggio del mouse */
+}

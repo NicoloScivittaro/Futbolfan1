@@ -16,6 +16,12 @@ namespace FutbolFan1.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllPlayers()
+        {
+            var players = await _context.Players.ToListAsync();
+            return Ok(players);
+        }
 
         // GET: Players
         [HttpGet]
@@ -139,4 +145,5 @@ namespace FutbolFan1.Controllers
             return _context.Players.Any(e => e.Id == id);
         }
     }
+
 }

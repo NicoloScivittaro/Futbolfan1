@@ -1,0 +1,31 @@
+.team-list-title {
+  font-size: 2.5rem;
+  font-family: 'Montserrat', sans-serif; /* Font moderno */
+  color: #007bff; /* Colore blu calcistico */
+  text-transform: uppercase; /* Tutte le lettere in maiuscolo */
+  font-weight: 700;
+  letter-spacing: 1.5px; /* Spaziatura tra le lettere */
+  margin-bottom: 30px;
+  text-align: center; /* Centra il testo orizzontalmente */
+
+  &::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: #28a745; /* Colore verde calcistico */
+    margin: 10px auto; /* Centro il bordo inferiore */
+    border-radius: 2px;
+  }
+
+  &:hover {
+    color: #0056b3;
+
+    &::after {
+      background-color: #ffc107;
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}

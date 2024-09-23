@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TeamService } from '../services/team.service';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

@@ -1,16 +1,35 @@
-<h2>Lista Squadre</h2>
-<ul>
-  <li *ngFor="let team of teams">
-    <h3>
-      <!-- Link cliccabile che porta alla pagina di gestione della squadra -->
-      <a [routerLink]="['/team', team.id]">{{ team.name }}</a>
-    </h3>
-    <p>Allenatore: {{ team.coach }}</p>
-    <p>Transfer Budget: {{ team.transferBudget }}</p>
-    <p>Salary Budget: {{ team.salaryBudget }}</p>
-    <!-- Pulsante per visualizzare i dettagli della squadra -->
-    <button [routerLink]="['/team', team.id]">Scegli</button>
-    <!-- Pulsante per comprare un giocatore (esempio con ID fisso) -->
-    <button (click)="buyPlayer(team.id, 1)">Compra giocatore</button>
-  </li>
-</ul>
+<h2 class="team-list-title m-4 text-center">Lista Squadre</h2>
+<div class="row justify-content-center">
+  <div class="col-md-4 mb-4" *ngFor="let team of teams">
+    <div class="card team-card shadow-sm">
+      <div class="card-body">
+        <h3 class="card-title text-center">
+          <a [routerLink]="['/team', team.id]" class="team-link">{{ team.name }}</a>
+        </h3>
+        <p class="card-text text-center"><strong>Allenatore:</strong> {{ team.coach }}</p>
+        <p class="card-text text-center"><strong>Budget Trasferimenti:</strong> €{{ team.transferBudget | number }}</p>
+        <p class="card-text text-center"><strong>Budget Salari:</strong> €{{ team.salaryBudget | number }}</p>
+
+        <button class="btn btn-success btn-block" [routerLink]="['/team', team.id]">Scegli</button>
+
+        <div class="mt-3">
+          <h4 class="text-center">Salvataggi della Squadra</h4>
+          <ul *ngIf="saves[team.id] && saves[team.id].length > 0" class="list-group">
+            <li *ngFor="let save of saves[team.id]" class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <h5>{{ save.name }}</h5>
+                <input [(ngModel)]="save.newName" placeholder="Nuovo nome" class="form-control mt-2">
+              </div>
+              <div class="btn-group ml-3" role="group">
+                <button class="btn btn-warning" (click)="renameSave(team.id, save.id, save.newName ?? '')">Rinomina</button>
+                <button (click)="loadSave(save.id)">Carica</button>
+
+              </div>
+            </li>
+          </ul>
+          <p *ngIf="!saves[team.id]?.length" class="text-muted text-center mt-2">Nessun salvataggio disponibile.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+.container {
+  max-width: 400px; /* Limita la larghezza del modulo */
+  background-color: #f8f9fa; /* Sfondo chiaro */
+  border-radius: 10px; /* Angoli arrotondati */
+  padding: 20px; /* Padding interno */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra */
+}
+
+h2 {
+  color: #343a40; /* Colore del titolo */
+}
+
+.form-label {
+  font-weight: bold; /* Grassetto per le etichette */
+}

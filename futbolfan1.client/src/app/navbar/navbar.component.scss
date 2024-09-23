@@ -1,12 +1,42 @@
 /* navbar.component.scss */
 .navbar {
-  margin-bottom: 20px;
-}
+  background-color: #007bff;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
-/* footer.component.scss */
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background-color: #f8f9fa;
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    color: white;
+  }
+
+  .nav-link {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: #ffd700;
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.7);
+    }
+  }
+
+  .logout-btn {
+    color: #dc3545 !important; /* Colore rosso per il pulsante di logout */
+  }
+
+  .ml-auto {
+    margin-left: auto; /* Sposta Login, Register e Logout a destra */
+  }
 }

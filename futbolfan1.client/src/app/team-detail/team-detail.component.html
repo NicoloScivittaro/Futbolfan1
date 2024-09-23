@@ -1,33 +1,42 @@
-<h2>Dettagli della Squadra</h2>
+<h2 class="team-details-title text-center m-4">Dettagli della Squadra</h2>
 
-<!-- Visualizzazione dei dettagli della squadra -->
-<div *ngIf="team">
-  <h3>{{ team?.name }}</h3>
-  <p>Allenatore: {{ team?.coach }}</p>
-  <p>Transfer Budget: {{ team?.transferBudget }}</p>
-  <p>Salary Budget: {{ team?.salaryBudget }}</p>
+<div *ngIf="team" class="team-details-container">
+  <div class="card team-card shadow-sm mb-4">
+    <div class="card-body">
+      <h3 class="card-title text-center">{{ team?.name }}</h3>
+      <p class="card-text"><strong>Allenatore:</strong> {{ team?.coach }}</p>
+      <p class="card-text"><strong>Budget Trasferimenti:</strong> €{{ team?.transferBudget | number }}</p>
+      <p class="card-text"><strong>Budget Salari:</strong> €{{ team?.salaryBudget | number }}</p>
 
-  <h4>Giocatori della Squadra</h4>
-  <ul>
-    <li *ngFor="let player of team?.players">
-      {{ player.name }} - {{ player.position }} - Età: {{ player.age }}
-      <button (click)="sellPlayer(player.id)">Vendi</button>
-    </li>
-  </ul>
+      <h4 class="text-center">Giocatori della Squadra</h4>
+      <ul class="list-group mb-4">
+        <li *ngFor="let player of team?.players" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Salario: €{{ player.salary | number }}
+          <button class="btn btn-danger" (click)="sellPlayer(player.id)">Vendi</button>
+        </li>
+      </ul>
 
-  <h4>Giocatori Disponibili</h4>
-  <ul>
-    <li *ngFor="let player of availablePlayers">
-      {{ player.name }} - {{ player.position }} - Costo: {{ player.cost }}
-      <button (click)="buyPlayer(player.id)">Compra</button>
-    </li>
-  </ul>
-</div>
+      <h4 class="text-center">Giocatori Disponibili</h4>
+      <ul class="list-group">
+        <li *ngFor="let player of availablePlayers" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Salario: €{{ player.salary | number }}
+          <button class="btn btn-primary" (click)="buyPlayer(player.id)">Compra</button>
+        </li>
+      </ul>
+    </div>
+  </div>
 
-<!-- Messaggi di errore o successo -->
-<div *ngIf="errorMessage" class="error">
-  {{ errorMessage }}
-</div>
-<div *ngIf="successMessage" class="success">
-  {{ successMessage }}
+  <!-- Salva Squadra -->
+  <div class="save-team-container text-center mt-4">
+    <input type="text" [(ngModel)]="saveName" class="form-control mb-2" placeholder="Inserisci nome salvataggio" />
+    <button class="btn btn-success" (click)="saveTeam()">Salva Squadra</button>
+  </div>
+
+  <!-- Messaggi di errore o successo -->
+  <div *ngIf="errorMessage" class="alert alert-danger mt-4">
+    {{ errorMessage }}
+  </div>
+  <div *ngIf="successMessage" class="alert alert-success mt-4">
+    {{ successMessage }}
+  </div>
 </div>

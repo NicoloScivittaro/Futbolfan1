@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from './services/api.service';
+import { PlayerService } from './services/PlayerService';
 import { Team } from './model/team';
 import { Player } from './model/player';
 
@@ -14,14 +14,14 @@ export class AppComponent implements OnInit {
   players: Player[] = [];
   selectedTeam: Team | null = null;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private PlayerService: PlayerService) { }
 
   ngOnInit(): void {
     this.getTeams();
   }
 
   getTeams(): void {
-    this.apiService.getTeams().subscribe({
+    this.PlayerService.getTeams().subscribe({
       next: (teams: Team[]) => {
         this.teams = teams;
       },
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   }
 
   getPlayersByTeam(teamId: number): void {
-    this.apiService.getPlayersByTeam(teamId).subscribe({
+    this.PlayerService.getPlayersByTeam(teamId).subscribe({
       next: (players: Player[]) => {
         if (players.length === 0) {
           console.log('Nessun giocatore trovato per la squadra con ID:', teamId);

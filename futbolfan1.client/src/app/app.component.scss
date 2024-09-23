@@ -42,3 +42,13 @@ button {
 button:hover {
   background-color: #303f9f;
 }
+/* Impostazioni del layout */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altezza minima per coprire tutta la pagina */
+}
+
+.content {
+  flex: 1; /* Occupa tutto lo spazio disponibile, spingendo il footer verso il basso */
+}

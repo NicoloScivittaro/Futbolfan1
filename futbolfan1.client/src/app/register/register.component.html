@@ -1,15 +1,26 @@
-<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <label for="email">Email:</label>
-  <input id="email" formControlName="email" type="email">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="container mt-5">
+  <h2 class="text-center mb-4">Registrati</h2>
 
-  <label for="userName">User Name:</label>
-  <input id="userName" formControlName="userName" type="text">
+  <div class="mb-3">
+    <label for="email" class="form-label">Email:</label>
+    <input id="email" formControlName="email" type="email" class="form-control" placeholder="Inserisci la tua email" required>
+  </div>
 
-  <label for="password">Password:</label>
-  <input id="password" formControlName="password" type="password">
+  <div class="mb-3">
+    <label for="userName" class="form-label">Nome Utente:</label>
+    <input id="userName" formControlName="userName" type="text" class="form-control" placeholder="Scegli un nome utente" required>
+  </div>
 
-  <label for="confirmPassword">Confirm Password:</label>
-  <input id="confirmPassword" formControlName="confirmPassword" type="password">
+  <div class="mb-3">
+    <label for="password" class="form-label">Password:</label>
+    <input id="password" formControlName="password" type="password" class="form-control" placeholder="Crea una password" required>
+  </div>
 
-  <button type="submit">Register</button>
+  <div class="mb-3">
+    <label for="confirmPassword" class="form-label">Conferma Password:</label>
+    <input id="confirmPassword" formControlName="confirmPassword" type="password" class="form-control" placeholder="Conferma la tua password" required>
+  </div>
+
+  <button type="submit" class="btn btn-primary w-100">Registrati</button>
 </form>
+

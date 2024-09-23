@@ -16,13 +16,7 @@ export class ApiService {
   getTeams(): Observable<Team[]> {
     return this.http.get<Team[]>(this.apiUrl);
   }
-  getPlayers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/players`);
 
-    // Ottiene i giocatori di una specifica squadra
-  }
-  getPlayersByTeam(teamId: number): Observable<Player[]> {
-    return this.http.get<Player[]>(`${this.apiUrl}/Teams/${teamId}/players`);
-  }
+
 
 }

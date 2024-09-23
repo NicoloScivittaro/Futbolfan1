@@ -1,27 +1,103 @@
-h2 {
-  font-size: 1.5em;
-  margin-bottom: 20px;
+.team-details-title {
+  font-size: 2.5rem;
+  font-family: 'Montserrat', sans-serif;
+  color: #007bff; /* Colore blu calcistico */
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 30px;
+  text-align: center;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 4px;
+    background-color: #28a745; /* Verde calcistico */
+    margin: 10px auto;
+    border-radius: 2px;
+  }
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.team-details-container {
+  margin: 0 auto;
+  max-width: 800px;
 }
 
-li {
-  margin-bottom: 10px;
+.team-card {
+  background-image: url('/assets/team-background.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .card-body {
+    background: rgba(255, 255, 255, 0.85); /* Sfondo semi-trasparente per risaltare il testo */
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  .card-title {
+    font-size: 1.8rem;
+    color: #007bff;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
 }
 
-button {
-  margin-left: 10px;
+.list-group-item {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-family: 'Montserrat', sans-serif;
+
+  .btn {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
 }
 
-.error {
-  color: red;
-  margin-top: 20px;
+.save-team-container {
+  max-width: 500px;
+  margin: 0 auto;
+
+  .form-control {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+
+    &:hover {
+      background-color: #218838;
+    }
+  }
 }
 
-.success {
-  color: green;
-  margin-top: 20px;
+.alert {
+  font-family: 'Montserrat', sans-serif;
+  border-radius: 8px;
+  font-size: 1rem;
 }
