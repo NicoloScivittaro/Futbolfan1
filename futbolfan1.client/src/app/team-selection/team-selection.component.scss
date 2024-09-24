@@ -1,31 +1,59 @@
 .team-list-title {
   font-size: 2.5rem;
-  font-family: 'Montserrat', sans-serif; /* Font moderno */
-  color: #007bff; /* Colore blu calcistico */
-  text-transform: uppercase; /* Tutte le lettere in maiuscolo */
+  font-family: 'Montserrat', sans-serif;
+  color: #007bff;
+  text-transform: uppercase;
   font-weight: 700;
-  letter-spacing: 1.5px; /* Spaziatura tra le lettere */
+  letter-spacing: 1.5px;
   margin-bottom: 30px;
-  text-align: center; /* Centra il testo orizzontalmente */
+  text-align: center;
+  position: relative; /* Necessario per il pseudo-elemento */
+}
 
-  &::after {
-    content: '';
-    display: block;
-    width: 80px;
-    height: 4px;
-    background-color: #28a745; /* Colore verde calcistico */
-    margin: 10px auto; /* Centro il bordo inferiore */
-    border-radius: 2px;
-  }
+.team-list-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background-color: #28a745;
+  margin: 10px auto;
+  border-radius: 2px;
+}
 
-  &:hover {
-    color: #0056b3;
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
 
-    &::after {
-      background-color: #ffc107;
-      transition: background-color 0.3s ease;
-    }
-  }
+.hover-shadow {
+  transition: transform 0.2s;
+}
 
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+  transition: background-color 0.3s;
+}
+
+.btn:hover {
+  color: white;
+}
+
+.card-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 1.2rem;
+}
+
+.list-group-item {
+  transition: background-color 0.3s;
+}
+
+.list-group-item:hover {
+  background-color: rgba(0, 123, 255, 0.1);
 }

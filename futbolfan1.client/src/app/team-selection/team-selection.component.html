@@ -1,7 +1,7 @@
 <h2 class="team-list-title m-4 text-center">Lista Squadre</h2>
 <div class="row justify-content-center">
   <div class="col-md-4 mb-4" *ngFor="let team of teams">
-    <div class="card team-card shadow-sm">
+    <div class="card team-card shadow-lg hover-shadow">
       <div class="card-body">
         <h3 class="card-title text-center">
           <a [routerLink]="['/team', team.id]" class="team-link">{{ team.name }}</a>
@@ -22,8 +22,8 @@
               </div>
               <div class="btn-group ml-3" role="group">
                 <button class="btn btn-warning" (click)="renameSave(team.id, save.id, save.newName ?? '')">Rinomina</button>
-                <button (click)="loadSave(save.id)">Carica</button>
-
+                <button (click)="loadSave(save.id)" class="btn btn-info">Carica</button>
+                <button class="btn btn-danger" (click)="deleteSave(team.id, save.id)">Elimina</button>
               </div>
             </li>
           </ul>

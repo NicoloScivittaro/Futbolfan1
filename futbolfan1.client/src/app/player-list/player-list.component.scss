@@ -1,0 +1,48 @@
+.container {
+  max-width: 800px; /* Center the content */
+  margin: 0 auto; /* Center the container */
+  padding: 20px;
+}
+
+h2 {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: #28a745; /* Bootstrap success color */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+.player-name {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.player-position {
+  font-size: 16px;
+  color: #f8f9fa;
+  font-style: italic;
+}
+
+.player-age, .player-team, .player-rating {
+  font-weight: bold;
+}
+
+.fifa-card {
+  border-radius: 8px; /* Rounded corners for cards */
+}
+
+.text-muted {
+  font-style: italic;
+}

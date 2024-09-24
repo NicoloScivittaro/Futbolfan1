@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace FutbolFan1.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class PlayersController : Controller
     {
         private readonly FutbolFanContext _context;
@@ -16,77 +18,92 @@ namespace FutbolFan1.Controllers
         {
             _context = context;
         }
-        [HttpGet]
+
+        // GET: api/players
+        [HttpGet("players")]
         public async Task<IActionResult> GetAllPlayers()
         {
-            var players = await _context.Players.ToListAsync();
-            return Ok(players);
-        }
-
-        // GET: Players
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
             var players = await _context.Players.Include(p => p.Team).ToListAsync();
-            return View(players);
-        }
-
-        // GET: api/Teams/{teamId}/players
-        [HttpGet("{teamId}/players")]
-        public async Task<IActionResult> GetPlayersByTeam(int teamId)
-        {
-            var players = await _context.Players
-                .Where(p => p.TeamId == teamId)
-                .ToListAsync();
-
             return Ok(players);
         }
 
-        // GET: Players/Details/5
-        [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        // GET: api/players/{id}
+        [HttpGet("players/{id}")]
+        public async Task<IActionResult> GetPlayerById(int id)
         {
-            var player = await _context.Players
-                .Include(p => p.Team)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            var player = await _context.Players.Include(p => p.Team).FirstOrDefaultAsync(p => p.Id == id);
 
             if (player == null)
             {
                 return NotFound();
             }
 
-            return View(player);
+            return Ok(player);
         }
 
-        // GET: Players/Create
-        [HttpGet]
-        public IActionResult Create()
+        // GET: api/teams/{teamId}/players
+        [HttpGet("teams/{teamId}/players")]
+        public async Task<IActionResult> GetPlayersByTeam(int teamId)
         {
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name");
-            return View();
+            var players = await _context.Players
+                .Where(p => p.TeamId == teamId)
+                .ToListAsync();
+
+            if (players == null || !players.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(players);
         }
 
-        // POST: Players/Create
-        [HttpPost("api/players/create")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Position,Age,Cost,Salary,Role,IsStarting,TeamId,Speed,Shooting,Passing,Dribbling,Defense,Physical")] Player player)
+        // POST: api/players/create
+        [HttpPost("players/create")]
+        public async Task<IActionResult> CreatePlayer([FromBody] Player player)
         {
+            if (player == null)
+            {
+                return BadRequest("Player data is invalid.");
+            }
+
+            _context.Players.Add(player);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetPlayerById), new { id = player.Id }, player);
+        }
+
+        // PUT: api/players/{id}
+        [HttpPut("players/{id}")]
+        public async Task<IActionResult> UpdatePlayer(int id, [FromBody] Player player)
+        {
+            if (id != player.Id)
+            {
+                return BadRequest("Player ID mismatch.");
+            }
+
+            _context.Entry(player).State = EntityState.Modified;
+
             try
             {
-                _context.Add(player);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateConcurrencyException)
             {
-                ModelState.AddModelError("", "Non è stato possibile salvare il giocatore. Verifica i dati inseriti e riprova.");
-                ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", player.TeamId);
-                return View(player);
+                if (!PlayerExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
+
+            return NoContent();
         }
 
-        // GET: Players/Edit/5
-        [HttpGet]
+        // GET: Players/Edit/5 (for view purposes)
+        [HttpGet("players/edit/{id}")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -99,12 +116,13 @@ namespace FutbolFan1.Controllers
             {
                 return NotFound();
             }
+
             ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", player.TeamId);
             return View(player);
         }
 
         // POST: Players/Edit/5
-        [HttpPost]
+        [HttpPost("players/edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Position,Age,Cost,Salary,Role,IsStarting,TeamId,Speed,Shooting,Passing,Dribbling,Defense,Physical")] Player player)
         {
@@ -129,12 +147,6 @@ namespace FutbolFan1.Controllers
                     throw;
                 }
             }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "Si è verificato un errore durante l'aggiornamento del giocatore. " + ex.Message);
-                ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Name", player.TeamId);
-                return View(player);
-            }
 
             return RedirectToAction(nameof(Index));
         }
@@ -145,5 +157,4 @@ namespace FutbolFan1.Controllers
             return _context.Players.Any(e => e.Id == id);
         }
     }
-
 }

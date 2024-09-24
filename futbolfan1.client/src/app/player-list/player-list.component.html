@@ -1,8 +1,29 @@
-<h2>Lista Giocatori</h2>
+<div class="container text-center">
+  <h2 class="mb-4 text-success">Lista Giocatori</h2>
 
-<a [routerLink]="['/create-player']" class="btn btn-primary">Aggiungi Giocatore</a>
-<ul>
-  <li *ngFor="let player of players">
-    {{ player.name }} - {{ player.position }}
-  </li>
-</ul>
+  <a [routerLink]="['/create-player']" class="btn btn-primary mb-3">Aggiungi Giocatore</a>
+
+  <div *ngIf="players && players.length > 0" class="row justify-content-center">
+    <div class="col-md-4" *ngFor="let player of players">
+      <div class="card fifa-card mb-4 shadow-sm">
+        <div class="card-header text-center bg-primary text-white">
+          <h5 class="player-name">{{ player.name }}</h5>
+          <p class="player-position">{{ player.position }}</p>
+        </div>
+        <div class="card-body text-center">
+          <p>Età: <span class="player-age">{{ player.age }}</span></p>
+          <p>Squadra: <span class="player-team">{{ player.teamId ? 'Team ' + player.teamId : 'No Team' }}</span></p>
+          <p>Valutazione: <span class="player-rating">{{ calculateOverall(player) | number:'1.0-1' }}</span></p>
+          <div class="d-flex justify-content-around mt-3">
+            <a [routerLink]="['/edit-player', player.id]" class="btn btn-warning">Modifica</a>
+            <a [routerLink]="['/players1', player.id]" class="btn btn-info">Dettagli</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!players || players.length === 0" class="mt-4">
+    <p class="text-muted">Nessun giocatore disponibile</p>
+  </div>
+</div>

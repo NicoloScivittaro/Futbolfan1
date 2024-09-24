@@ -67,30 +67,37 @@ export class TeamSelectionComponent implements OnInit {
   loadSave(saveId: number): void {
     this.teamService.loadSave(saveId).subscribe(
       (team: any) => {
-        console.log('Caricamento del salvataggio:', team);
-
-        // Aggiorna lo stato della squadra caricata
+        // Aggiorna la squadra
         const index = this.teams.findIndex(t => t.id === team.id);
         if (index !== -1) {
-          // Se la squadra esiste già nella lista, aggiorna i suoi dati
-          this.teams[index] = team;
+          this.teams[index] = team; // Aggiorna i dati della squadra
         } else {
-          // Se la squadra non è nella lista, la aggiungi
-          this.teams.push(team);
+          this.teams.push(team); // Aggiungi la squadra
         }
 
-        // Se vuoi anche gestire i giocatori, assicurati di aggiornare i dati dei giocatori
-        // Puoi farlo in questo modo, se i giocatori sono già parte dell'oggetto team
-        const players = team.players || []; // Assicurati che ci sia un array di giocatori
-        console.log('Giocatori caricati:', players);
-        // Qui puoi aggiungere logica per gestire i giocatori, se necessario
+        // Assicurati di gestire i giocatori
+        console.log('Giocatori caricati:', team.players);
+        // Qui puoi gestire i dati dei giocatori se necessario
 
-        // Naviga alla pagina dei dettagli della squadra
         this.router.navigate(['/team-details', team.id]);
       },
       (error: any) => this.errorMessage = 'Errore nel caricamento del salvataggio'
     );
   }
 
+
+  // Metodo per eliminare un salvataggio
+  deleteSave(teamId: number, saveId: number): void {
+    this.teamService.deleteSave(saveId).subscribe(
+      () => {
+        // Rimuovi il salvataggio dalla lista locale dopo l'eliminazione
+        this.saves[teamId] = this.saves[teamId].filter(save => save.id !== saveId);
+        this.errorMessage = ''; // Resetta eventuali messaggi di errore
+      },
+      (error: any) => {
+        this.errorMessage = 'Errore nell\'eliminazione del salvataggio';
+      }
+    );
+  }
 
   }

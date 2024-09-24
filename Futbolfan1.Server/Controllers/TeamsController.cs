@@ -412,6 +412,40 @@ namespace FutbolFan1.Controllers
         {
             public string NewName { get; set; }
         }
+        [HttpDelete("DeleteSave/{id}")]
+        public async Task<IActionResult> DeleteSave(int id)
+        {
+            var teamSave = await _context.TeamSaves.FindAsync(id);
+            if (teamSave == null)
+            {
+                return NotFound("Save not found.");
+            }
+
+            Console.WriteLine($"Attempting to delete save with ID: {id}");
+
+            _context.TeamSaves.Remove(teamSave);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Successfully deleted save with ID: {id}");
+            }
+            catch (DbUpdateException dbEx)
+            {
+                Console.WriteLine($"Database update error: {dbEx.Message}");
+                return StatusCode(500, $"Database error: {dbEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting save: {ex.Message}");
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+            return Ok();
+        }
+
+
 
     }
+
 }

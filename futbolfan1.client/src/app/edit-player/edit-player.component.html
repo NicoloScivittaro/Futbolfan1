@@ -1,1 +1,66 @@
-<p>edit-player works!</p>
+<div class="edit-player-form-container">
+  <h2>Edit Player</h2>
+  <form [formGroup]="editPlayerForm" (ngSubmit)="onSubmit()" class="edit-player-form">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input id="name" formControlName="name" type="text" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="position">Position:</label>
+      <input id="position" formControlName="position" type="text" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="age">Age:</label>
+      <input id="age" formControlName="age" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="cost">Cost:</label>
+      <input id="cost" formControlName="cost" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="salary">Salary:</label>
+      <input id="salary" formControlName="salary" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="speed">Speed:</label>
+      <input id="speed" formControlName="speed" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="shooting">Shooting:</label>
+      <input id="shooting" formControlName="shooting" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="passing">Passing:</label>
+      <input id="passing" formControlName="passing" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="dribbling">Dribbling:</label>
+      <input id="dribbling" formControlName="dribbling" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="defense">Defense:</label>
+      <input id="defense" formControlName="defense" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="physical">Physical:</label>
+      <input id="physical" formControlName="physical" type="number" class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label for="teamId">Team ID:</label>
+      <input id="teamId" formControlName="teamId" type="number" class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>

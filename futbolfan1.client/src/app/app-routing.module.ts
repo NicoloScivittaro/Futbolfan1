@@ -15,16 +15,20 @@ import { ChampionshipListComponent } from './championship-list/championship-list
 import { CreateChampionshipComponent } from './create-championship/create-championship.component';
 import { EditChampionshipComponent } from './edit-championship/edit-championship.component';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
+import { EditPlayerComponent } from './edit-player/edit-player.component';
+import { PlayersComponent } from './players/players.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },  // Home page
   { path: 'team-selection', component: TeamSelectionComponent },
   { path: 'players', component: PlayerListComponent },
+  { path: 'players1/:id', component: PlayersComponent },
   { path: 'teams', component: TeamsComponent },
   { path: 'team/:id', component: TeamDetailComponent },
   { path: 'team-details/:id', component: TeamDetailComponent },
   { path: 'create-team', component: CreateTeamComponent },
   { path: 'edit-team/:id', component: EditTeamComponent },
+  { path: 'edit-player/:id', component: EditPlayerComponent },
   { path: 'create-player', component: CreatePlayerComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },

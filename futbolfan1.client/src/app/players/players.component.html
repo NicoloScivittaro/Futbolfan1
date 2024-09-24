@@ -1,10 +1,28 @@
-<h1>Giocatori della squadra</h1>
+<div class="container mt-4">
+  <h2 class="text-center">Dettagli Giocatore</h2>
 
-<a [routerLink]="['/create-player']" class="btn btn-primary">Aggiungi Giocatore</a>
+  <div *ngIf="player" class="card mb-4 shadow-sm">
+    <div class="card-header text-center bg-primary text-white">
+      <h5>{{ player.name }}</h5>
+      <p>{{ player.position }}</p>
+    </div>
+    <div class="card-body text-center">
+      <p><strong>Età:</strong> {{ player.age }}</p>
+      <p><strong>Squadra:</strong> {{ player.teamId ? 'Team ' + player.teamId : 'No Team' }}</p>
+      <p><strong>Valutazione:</strong> {{ calculateOverall(player) | number:'1.0-1' }}</p>
+      <p><strong>Cost:</strong> {{ player.cost | currency }}</p>
+      <p><strong>Salary:</strong> {{ player.salary | currency }}</p>
+      <p><strong>Speed:</strong> {{ player.speed }}</p>
+      <p><strong>Shooting:</strong> {{ player.shooting }}</p>
+      <p><strong>Passing:</strong> {{ player.passing }}</p>
+      <p><strong>Dribbling:</strong> {{ player.dribbling }}</p>
+      <p><strong>Defense:</strong> {{ player.defense }}</p>
+      <p><strong>Physical:</strong> {{ player.physical }}</p>
+      <button (click)="goBack()" class="btn btn-secondary">Indietro alla lista</button>
+    </div>
+  </div>
 
-<h2 class="text-center">Giocatori</h2>
-<ul class="list-group">
-  <li *ngFor="let player of players" class="list-group-item">
-    {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Costo: €{{ player.cost | number }} - Salario: €{{ player.salary | number }}
-  </li>
-</ul>
+  <div *ngIf="!player" class="text-center">
+    <p class="text-danger">Nessun giocatore trovato.</p>
+  </div>
+</div>

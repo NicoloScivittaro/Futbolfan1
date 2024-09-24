@@ -7,7 +7,7 @@ export interface Player {
   salary: number;
   role: string;
   isStarting: boolean;
-  teamId: number;
+  teamId?: number;
   speed: number;
   shooting: number;
   passing: number;

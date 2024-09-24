@@ -108,4 +108,9 @@ export class TeamService {
     return this.http.get<any>(`${this.apiUrl}/LoadTeamSave/${saveId}`);
   }
 
+  // Metodo per eliminare un salvataggio
+  deleteSave(saveId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/DeleteSave/${saveId}`);
+  }
+
 }

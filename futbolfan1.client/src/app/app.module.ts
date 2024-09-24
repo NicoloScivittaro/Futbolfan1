@@ -26,6 +26,7 @@ import { EditChampionshipComponent } from './edit-championship/edit-championship
 import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { ApiService } from './services/api.service';
 import { PlayerService } from './services/PlayerService';
+import { PlayersComponent } from './players/players.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { PlayerService } from './services/PlayerService';
     TeamListComponent,
     TeamDetailComponent,
     NavbarComponent,
+    PlayersComponent,
     EditTeamComponent,
     RegisterComponent,
     LoginComponent,
