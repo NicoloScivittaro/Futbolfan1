@@ -8,22 +8,52 @@
       <p class="card-text"><strong>Budget Trasferimenti:</strong> €{{ team?.transferBudget | number }}</p>
       <p class="card-text"><strong>Budget Salari:</strong> €{{ team?.salaryBudget | number }}</p>
 
+      <!-- Barra di ricerca e filtri per i giocatori della squadra -->
+      <div class="mb-3">
+        <input type="text" [(ngModel)]="teamPlayerSearch" class="form-control" placeholder="Cerca giocatori nella squadra" />
+        <input type="number" [(ngModel)]="maxAge" class="form-control mt-2" placeholder="Età massima" />
+        <input type="number" [(ngModel)]="maxSalary" class="form-control mt-2" placeholder="Salario massimo" />
+        <input type="number" [(ngModel)]="maxCost" class="form-control mt-2" placeholder="Costo massimo" />
+      </div>
+
       <h4 class="text-center">Giocatori della Squadra</h4>
       <ul class="list-group mb-4">
-        <li *ngFor="let player of team?.players" class="list-group-item d-flex justify-content-between align-items-center">
-          {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Salario: €{{ player.salary | number }}
+        <li *ngFor="let player of filteredTeamPlayers()" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Salario: €{{ player.salary | number }} - Costo: €{{ player.cost | number }}
           <button class="btn btn-danger" (click)="sellPlayer(player.id)">Vendi</button>
+          <button class="btn btn-info" (click)="toggleFormation(player)">Seleziona</button>
         </li>
       </ul>
 
+      <!-- Barra di ricerca e filtri per i giocatori disponibili -->
+      <div class="mb-3">
+        <h4 class="text-center">Budget Trasferimenti Disponibili: €{{ team?.transferBudget | number }}</h4>
+        <h4 class="text-center">Budget Salari Disponibili: €{{ team?.salaryBudget | number }}</h4>
+        <input type="text" [(ngModel)]="availablePlayerSearch" class="form-control" placeholder="Cerca giocatori disponibili" />
+        <input type="number" [(ngModel)]="maxAge" class="form-control mt-2" placeholder="Età massima" />
+        <input type="number" [(ngModel)]="maxSalary" class="form-control mt-2" placeholder="Salario massimo" />
+        <input type="number" [(ngModel)]="maxCost" class="form-control mt-2" placeholder="Costo massimo" />
+      </div>
+
       <h4 class="text-center">Giocatori Disponibili</h4>
       <ul class="list-group">
-        <li *ngFor="let player of availablePlayers" class="list-group-item d-flex justify-content-between align-items-center">
-          {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Salario: €{{ player.salary | number }}
+        <li *ngFor="let player of filteredAvailablePlayers()" class="list-group-item d-flex justify-content-between align-items-center">
+          {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Salario: €{{ player.salary | number }} - Costo: €{{ player.cost | number }}
           <button class="btn btn-primary" (click)="buyPlayer(player.id)">Compra</button>
         </li>
       </ul>
     </div>
+  </div>
+
+  <!-- Sezione Formazione Selezionata -->
+  <div class="formation-container">
+    <h4 class="text-center">Formazione Selezionata</h4>
+    <ul class="list-group">
+      <li *ngFor="let player of selectedFormation" class="list-group-item d-flex justify-content-between align-items-center">
+        {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Salario: €{{ player.salary | number }} - Costo: €{{ player.cost | number }}
+        <button class="btn btn-danger" (click)="removeFromFormation(player)">Rimuovi</button>
+      </li>
+    </ul>
   </div>
 
   <!-- Salva Squadra -->

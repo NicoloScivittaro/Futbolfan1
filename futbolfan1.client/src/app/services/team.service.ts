@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Team } from '../model/team';
 import { Player } from '../model/player';
+import { Save } from '../model/Save'; // Assumiamo che tu abbia un'interfaccia Save
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +22,12 @@ export class TeamService {
   getTeam(teamId: number): Observable<Team> {
     return this.http.get<Team>(`${this.apiUrl}/${teamId}`);
   }
+
+  // Ottieni i giocatori di un team
   getPlayers(teamId: number): Observable<Player[]> {
     return this.http.get<Player[]>(`${this.apiUrl}/${teamId}/players`);
   }
-  // In team.service.ts
-  getPlayer(playerId: number): Observable<Player> {
-    return this.http.get<Player>(`https://localhost:7293/api/players/${playerId}`);
-  }
+
   // Ottieni i giocatori disponibili per l'acquisto
   getAvailablePlayers(teamId: number): Observable<{ selectedTeam: Team; availablePlayers: Player[] }> {
     return this.http.get<{ selectedTeam: Team; availablePlayers: Player[] }>(`${this.apiUrl}/BuyPlayers/${teamId}`);
@@ -38,7 +38,6 @@ export class TeamService {
     return this.http.post<void>(`${this.apiUrl}/BuyPlayer`, { teamId, playerId })
       .pipe(
         tap(() => {
-          // Dopo l'acquisto, non serve gestire il budget qui
           console.log(`Player ${playerId} bought for team ${teamId}`);
         })
       );
@@ -49,7 +48,6 @@ export class TeamService {
     return this.http.post<void>(`${this.apiUrl}/SellPlayer`, { sellingTeamId, playerId })
       .pipe(
         tap(() => {
-          // Dopo la vendita, non serve gestire il budget qui
           console.log(`Player ${playerId} sold from team ${sellingTeamId}`);
         })
       );
@@ -57,14 +55,13 @@ export class TeamService {
 
   // Crea un nuovo team
   createTeam(team: Team): Observable<Team> {
-    return this.http.post<Team>(this.apiUrl, team);
+    return this.http.post<Team>('https://localhost:7293/api/teams', team);
   }
 
   // Modifica un team
   updateTeam(teamId: number, team: Team): Observable<Team> {
     return this.http.put<Team>(`${this.apiUrl}/${teamId}`, team);
   }
-
 
   // Cancella un team
   deleteTeam(teamId: number): Observable<void> {
@@ -77,8 +74,8 @@ export class TeamService {
   }
 
   // Salva lo stato del team
-  saveTeamState(saveRequest: { teamId: number; saveName: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/SaveTeam`, saveRequest);
+  saveTeamState(saveRequest: { teamId: number; saveName: string }): Observable<Save> {
+    return this.http.post<Save>(`${this.apiUrl}/SaveTeam`, saveRequest);
   }
 
   // Salva un giocatore
@@ -91,24 +88,23 @@ export class TeamService {
   }
 
   // Ottieni i salvataggi precedenti
-  getSaves(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/GetSaves`);
+  getSaves(): Observable<Save[]> {
+    return this.http.get<Save[]>(`${this.apiUrl}/GetSaves`);
   }
 
-  // Aggiungi anche il metodo per rinominare un salvataggio se non esiste
-  renameSave(saveId: number, newName: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/RenameSave/${saveId}`, { newName });
+  // Rinominare un salvataggio
+  renameSave(saveId: number, newName: string): Observable<Save> {
+    return this.http.put<Save>(`${this.apiUrl}/RenameSave/${saveId}`, { newName });
   }
 
   // Metodo per caricare un salvataggio
-  loadTeamSave(saveId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/LoadTeamSave/${saveId}`);
+  loadTeamSave(saveId: number): Observable<Save> {
+    return this.http.get<Save>(`${this.apiUrl}/LoadTeamSave/${saveId}`);
   }
-  loadSave(saveId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/LoadTeamSave/${saveId}`);
+  loadSave(saveId: number): Observable<Team> {
+    return this.http.get<Team>(`${this.apiUrl}/LoadTeamSave/${saveId}`);
   }
-
-  // Metodo per eliminare un salvataggio
+  // Elimina un salvataggio
   deleteSave(saveId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/DeleteSave/${saveId}`);
   }

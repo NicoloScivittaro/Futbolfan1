@@ -1,3 +1,42 @@
+/* Impostazioni del layout */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altezza minima per coprire l'intera finestra */
+}
+
+.content {
+  flex: 1; /* Occupa tutto lo spazio disponibile per il contenuto */
+  padding: 20px; /* Spazio intorno al contenuto */
+}
+
+/* Footer */
+.footer {
+  background-color: #f8f9fa; /* Colore di sfondo chiaro */
+  color: #6c757d; /* Colore del testo desaturato */
+  padding: 15px 0;
+  width: 100%;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1); /* Aggiungi un'ombra leggera sopra il footer */
+  font-family: 'Montserrat', sans-serif;
+}
+
+.footer .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+}
+
+.footer span {
+  font-weight: 500;
+  color: #6c757d;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.footer span:hover {
+  color: #007bff; /* Effetto hover con il colore blu */
+}
 
 .container {
   max-width: 800px;
@@ -5,15 +44,7 @@
   padding: 20px;
 }
 
-h1 {
-  text-align: center;
-  color: #3f51b5;
-}
-
-.teams, .players {
-  margin-bottom: 20px;
-}
-
+/* Ulteriori stili per l'elenco di squadre e giocatori */
 ul {
   list-style-type: none;
   padding: 0;
@@ -41,14 +72,4 @@ button {
 
 button:hover {
   background-color: #303f9f;
-}
-/* Impostazioni del layout */
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Altezza minima per coprire tutta la pagina */
-}
-
-.content {
-  flex: 1; /* Occupa tutto lo spazio disponibile, spingendo il footer verso il basso */
 }

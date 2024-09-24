@@ -3,8 +3,15 @@
 
   <a [routerLink]="['/create-player']" class="btn btn-primary mb-3">Aggiungi Giocatore</a>
 
-  <div *ngIf="players && players.length > 0" class="row justify-content-center">
-    <div class="col-md-4" *ngFor="let player of players">
+  <div class="mb-3">
+    <input type="text" [(ngModel)]="playerSearch" class="form-control" placeholder="Cerca giocatore per nome" />
+    <input type="number" [(ngModel)]="maxAge" class="form-control mt-2" placeholder="Età massima" />
+    <input type="number" [(ngModel)]="maxSalary" class="form-control mt-2" placeholder="Salario massimo" />
+    <input type="number" [(ngModel)]="maxCost" class="form-control mt-2" placeholder="Costo massimo" />
+  </div>
+
+  <div *ngIf="filteredPlayers().length > 0" class="row justify-content-center">
+    <div class="col-md-4" *ngFor="let player of filteredPlayers()">
       <div class="card fifa-card mb-4 shadow-sm">
         <div class="card-header text-center bg-primary text-white">
           <h5 class="player-name">{{ player.name }}</h5>
@@ -23,7 +30,7 @@
     </div>
   </div>
 
-  <div *ngIf="!players || players.length === 0" class="mt-4">
+  <div *ngIf="filteredPlayers().length === 0" class="mt-4">
     <p class="text-muted">Nessun giocatore disponibile</p>
   </div>
 </div>

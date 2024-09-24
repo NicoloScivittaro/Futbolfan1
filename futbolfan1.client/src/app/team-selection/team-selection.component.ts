@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TeamService } from '../services/team.service';
+import { Team } from '../model/team'; // Assicurati di avere il modello Team
+import { Save } from '../model/Save'; // Assicurati di avere il modello Save
 
 @Component({
   selector: 'app-team-selection',
@@ -8,8 +10,8 @@ import { TeamService } from '../services/team.service';
   styleUrls: ['./team-selection.component.scss']
 })
 export class TeamSelectionComponent implements OnInit {
-  teams: any[] = [];
-  saves: { [teamId: number]: { id: number; name: string; newName?: string }[] } = {};
+  teams: Team[] = []; // Modello Team per la lista di squadre
+  saves: { [teamId: number]: { id: number; name: string; newName?: string }[] } = {}; // Modello per i salvataggi
   errorMessage: string = '';
 
   constructor(private teamService: TeamService, private router: Router) { }
@@ -22,15 +24,15 @@ export class TeamSelectionComponent implements OnInit {
   // Metodo per ottenere le squadre
   getTeams(): void {
     this.teamService.getTeams().subscribe(
-      (teams: any[]) => this.teams = teams,
-      (error: any) => this.errorMessage = 'Errore nel caricamento delle squadre'
+      (teams: Team[]) => this.teams = teams,
+      (error: string) => this.errorMessage = 'Errore nel caricamento delle squadre'
     );
   }
 
   // Metodo per caricare i salvataggi
   loadSaves(): void {
     this.teamService.getSaves().subscribe(
-      (saves: { id: number; name: string; teamId: number }[]) => {
+      (saves: Save[]) => {
         console.log('Salvataggi ricevuti:', saves); // Log dei salvataggi ricevuti
         // Organizza i salvataggi per teamId
         saves.forEach(save => {
@@ -40,7 +42,7 @@ export class TeamSelectionComponent implements OnInit {
           this.saves[save.teamId].push({ id: save.id, name: save.name, newName: '' });
         });
       },
-      (error: any) => this.errorMessage = 'Errore nel caricamento dei salvataggi'
+      (error: string) => this.errorMessage = 'Errore nel caricamento dei salvataggi'
     );
   }
 
@@ -57,16 +59,17 @@ export class TeamSelectionComponent implements OnInit {
           }
           this.errorMessage = '';
         },
-        (error: any) => this.errorMessage = 'Errore nel rinominare il salvataggio'
+        (error: string) => this.errorMessage = 'Errore nel rinominare il salvataggio'
       );
     } else {
       this.errorMessage = 'Il nuovo nome del salvataggio non può essere vuoto';
     }
   }
 
+  // Metodo per caricare un salvataggio
   loadSave(saveId: number): void {
     this.teamService.loadSave(saveId).subscribe(
-      (team: any) => {
+      (team: Team) => {
         // Aggiorna la squadra
         const index = this.teams.findIndex(t => t.id === team.id);
         if (index !== -1) {
@@ -81,10 +84,9 @@ export class TeamSelectionComponent implements OnInit {
 
         this.router.navigate(['/team-details', team.id]);
       },
-      (error: any) => this.errorMessage = 'Errore nel caricamento del salvataggio'
+      (error: string) => this.errorMessage = 'Errore nel caricamento del salvataggio'
     );
   }
-
 
   // Metodo per eliminare un salvataggio
   deleteSave(teamId: number, saveId: number): void {
@@ -94,10 +96,10 @@ export class TeamSelectionComponent implements OnInit {
         this.saves[teamId] = this.saves[teamId].filter(save => save.id !== saveId);
         this.errorMessage = ''; // Resetta eventuali messaggi di errore
       },
-      (error: any) => {
+      (error: string) => {
         this.errorMessage = 'Errore nell\'eliminazione del salvataggio';
       }
     );
   }
 
-  }
+}

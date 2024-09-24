@@ -4,6 +4,16 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AuthResponse } from '../model/AuthResponse';
 
+interface RegisterResponse {
+  success: boolean;
+  message: string;
+}
+
+interface ProfileResponse {
+  id: number;
+  email: string;
+  userName: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +23,8 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  register(email: string, userName: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/register`, { email, userName, password, confirmPassword: password });
+  register(email: string, userName: string, password: string): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/api/register`, { email, userName, password, confirmPassword: password });
   }
 
   login(email: string, password: string): Observable<AuthResponse> {
@@ -26,7 +36,7 @@ export class AuthService {
       );
   }
 
-  getProtectedData(): Observable<any> {
+  getProtectedData(): Observable<any> {  // Qui puoi definire un'interfaccia se conosci la struttura
     return this.http.get<any>(`${this.apiUrl}/protected`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.getToken()}`
@@ -34,9 +44,9 @@ export class AuthService {
     });
   }
 
-  getProfile(): Observable<any> {
+  getProfile(): Observable<ProfileResponse> {
     const token = localStorage.getItem('token');
-    return this.http.get<any>(`${this.apiUrl}/profile`, {
+    return this.http.get<ProfileResponse>(`${this.apiUrl}/profile`, {
       headers: { Authorization: `Bearer ${token}` }
     });
   }

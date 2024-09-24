@@ -10,7 +10,8 @@
         <p class="card-text text-center"><strong>Budget Trasferimenti:</strong> €{{ team.transferBudget | number }}</p>
         <p class="card-text text-center"><strong>Budget Salari:</strong> €{{ team.salaryBudget | number }}</p>
 
-        <button class="btn btn-success btn-block" [routerLink]="['/team', team.id]">Scegli</button>
+        <button class="btn btn-success btn-block mt-4 mx-auto d-block" [routerLink]="['/team', team.id]">Scegli</button>
+
 
         <div class="mt-3">
           <h4 class="text-center">Salvataggi della Squadra</h4>

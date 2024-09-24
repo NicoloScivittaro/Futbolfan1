@@ -31,8 +31,8 @@ export class PlayerService {
     return this.http.get<Player>(`${this.apiUrl}/${id}`);
   }
 
-  updatePlayer(playerId: number, player: Player): Observable<any> {
-    return this.http.put(`${this.apiUrl}/players/${playerId}`, player);
+  updatePlayer(playerId: number, player: Player): Observable<Player> {
+    return this.http.put<Player>(`${this.apiUrl}/players/${playerId}`, player);
   }
 
   // Creare un nuovo giocatore
