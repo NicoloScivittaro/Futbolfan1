@@ -40,6 +40,7 @@
         <li *ngFor="let player of filteredAvailablePlayers()" class="list-group-item d-flex justify-content-between align-items-center">
           {{ player.name }} - {{ player.position }} - Età: {{ player.age }} - Salario: €{{ player.salary | number }} - Costo: €{{ player.cost | number }}
           <button class="btn btn-primary" (click)="buyPlayer(player.id)">Compra</button>
+          <button class="btn btn-info" (click)="toggleFormation(player)">Seleziona</button>
         </li>
       </ul>
     </div>
